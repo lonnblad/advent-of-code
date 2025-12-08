@@ -1,19 +1,17 @@
 package day3
 
 import (
-	"strconv"
 	"strings"
+
+	utilstrconv "github.com/lonnblad/advent-of-code/util/strconv"
 )
 
 func Day3A(input string) (_ int, err error) {
 	banks := strings.Split(input, "\n")
-
 	var totalSum int
 
 	for _, bank := range banks {
 		a, b := findHighestPair(bank)
-		// fmt.Println(a, b)
-
 		totalSum += a*10 + b
 	}
 
@@ -22,19 +20,22 @@ func Day3A(input string) (_ int, err error) {
 
 func findHighestPair(bank string) (int, int) {
 	cells := make([]int, len(bank))
+
 	for idx, cell := range strings.Split(bank, "") {
-		cells[idx], _ = strconv.Atoi(cell)
+		cells[idx] = utilstrconv.MustParseInt(cell)
 	}
 
+	// Find highest digit (excluding last element)
 	highestIdx := 0
-	secondHighestIdx := len(cells) - 1
 
 	for i := 0; i < len(cells)-1; i++ {
 		if cells[i] > cells[highestIdx] {
 			highestIdx = i
-			continue
 		}
 	}
+
+	// Find second highest digit that appears after the highest
+	secondHighestIdx := len(cells) - 1
 
 	for i := len(cells) - 1; i > highestIdx; i-- {
 		if cells[i] > cells[secondHighestIdx] {

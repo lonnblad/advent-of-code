@@ -1,22 +1,18 @@
 package day3
 
 import (
-	"fmt"
-	"strconv"
 	"strings"
+
+	utilstrconv "github.com/lonnblad/advent-of-code/util/strconv"
 )
 
 func Day3B(input string) (_ int, err error) {
 	banks := strings.Split(input, "\n")
-
 	var totalSum int
 
 	for _, bank := range banks {
 		val := findHighest12Numbers(bank)
-		fmt.Println(val)
-
 		totalSum += val
-		// break
 	}
 
 	return totalSum, nil
@@ -24,40 +20,45 @@ func Day3B(input string) (_ int, err error) {
 
 func findHighest12Numbers(bank string) int {
 	cells := make([]int, len(bank))
+
 	for idx, cell := range strings.Split(bank, "") {
-		cells[idx], _ = strconv.Atoi(cell)
+		cells[idx] = utilstrconv.MustParseInt(cell)
 	}
 
-	highestIndexes := make([]int, 12)
+	const numDigits = 12
+	highestIndexes := make([]int, numDigits)
 
-	for i := 0; i <= len(cells)-len(highestIndexes); i++ {
+	// Find first highest digit
+	highestIndexes[0] = 0
+
+	for i := 1; i <= len(cells)-numDigits; i++ {
 		if cells[i] > cells[highestIndexes[0]] {
 			highestIndexes[0] = i
 
 			if cells[i] == 9 {
-				break
+				break // Can't get higher than 9
 			}
 		}
 	}
 
-	// fmt.Println(highestIndexes[0])
+	// Find remaining digits, each must appear after the previous one
+	for idx := 1; idx < numDigits; idx++ {
+		startIdx := highestIndexes[idx-1] + 1
+		endIdx := len(cells) - (numDigits - idx)
+		highestIndexes[idx] = startIdx
 
-	for idx := 1; idx < 12; idx++ {
-		highestIndexes[idx] = highestIndexes[idx-1] + 1
-
-		for jdx := highestIndexes[idx-1] + 2; jdx <= len(cells)-(len(highestIndexes)-idx); jdx++ {
-			// fmt.Println(jdx, cells[jdx], highestIndexes[idx], cells[highestIndexes[idx]])
-
+		for jdx := startIdx + 1; jdx <= endIdx; jdx++ {
 			if cells[jdx] > cells[highestIndexes[idx]] {
 				highestIndexes[idx] = jdx
 
 				if cells[jdx] == 9 {
-					break
+					break // Can't get higher than 9
 				}
 			}
 		}
 	}
 
+	// Combine digits into a number
 	var result int
 
 	for _, idx := range highestIndexes {
