@@ -6,45 +6,49 @@ import (
 
 func Day7B(input string) (_ int, err error) {
 	m := matrix.NewMatrix(input)
+	row, col := m.Find("S")
+	startPos := [2]int{row, col}
 
-	startPos := [2]int{0, 0}
+	// Use a local memoization map to avoid global state issues
+	memo := make(map[[2]int]int)
 
-	for idx := range m.Values[0] {
-		if m.Values[0][idx] == "S" {
-			startPos[1] = idx
-			break
-		}
-	}
-
-	return traverseB(m, startPos), nil
+	return traverseB(m, startPos, memo), nil
 }
 
-var mapOfTraversedPositionsB = make(map[[2]int]int)
-
-// traverse the matrix from the start position to the end position
-// return the total sum of splits that need to be made
-func traverseB(m matrix.Matrix, currentPos [2]int) int {
+// traverseB recursively traverses the matrix from the current position downward.
+// Uses memoization to cache results and count the number of paths from each position.
+// Returns the total number of paths from the start position to the bottom.
+func traverseB(m matrix.Matrix, currentPos [2]int, memo map[[2]int]int) int {
 	nextPos := [2]int{currentPos[0] + 1, currentPos[1]}
 
+	// If we've reached the bottom, return 1 path
 	if !m.IsWithinBounds(nextPos) {
 		return 1
 	}
 
-	if val, exists := mapOfTraversedPositionsB[nextPos]; exists {
-		return val
+	// Return cached result if available
+	if cached, exists := memo[nextPos]; exists {
+		return cached
 	}
+
+	var result int
 
 	switch m.Values[nextPos[0]][nextPos[1]] {
 	case ".":
-		return traverseB(m, nextPos)
+		// Continue straight down - one path
+		result = traverseB(m, nextPos, memo)
+
 	case "^":
+		// Split left and right - sum of paths from both directions
 		leftPos := [2]int{nextPos[0], nextPos[1] - 1}
 		rightPos := [2]int{nextPos[0], nextPos[1] + 1}
 
-		val := traverseB(m, leftPos) + traverseB(m, rightPos)
-		mapOfTraversedPositionsB[nextPos] = val
-		return val
+		result = traverseB(m, leftPos, memo) + traverseB(m, rightPos, memo)
+	default:
+		result = 0
 	}
 
-	return 0
+	// Cache the result before returning
+	memo[nextPos] = result
+	return result
 }
