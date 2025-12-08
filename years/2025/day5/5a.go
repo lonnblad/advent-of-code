@@ -1,37 +1,55 @@
 package day5
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/lonnblad/advent-of-code/util/interval"
+	"github.com/lonnblad/advent-of-code/util/strconv"
 )
 
 func Day5A(input string) (_ int, err error) {
+	sections := strings.Split(input, "\n\n")
+	freshRanges := parseFreshRanges(sections[0])
+	usedIngredients := parseUsedIngredients(sections[1])
+
 	var totalSum int
 
-	sections := strings.Split(input, "\n\n")
-
-	fresh := strings.Split(sections[0], "\n")
-	freshRanges := make([]interval.Interval, len(fresh))
-
-	for idx, r := range fresh {
-		freshRanges[idx] = interval.ParseInterval(r)
-	}
-
-	used := strings.Split(sections[1], "\n")
-	usedIngredients := make([]int, len(used))
-
-	for idx, ingredient := range used {
-		usedIngredients[idx], _ = strconv.Atoi(ingredient)
-
-		for _, freshRange := range freshRanges {
-			if freshRange.Contains(usedIngredients[idx]) {
-				totalSum++
-				break
-			}
+	for _, ingredient := range usedIngredients {
+		if isInAnyRange(ingredient, freshRanges) {
+			totalSum++
 		}
 	}
 
 	return totalSum, nil
+}
+
+func parseFreshRanges(input string) []interval.Interval {
+	lines := strings.Split(input, "\n")
+	ranges := make([]interval.Interval, len(lines))
+
+	for idx, line := range lines {
+		ranges[idx] = interval.ParseInterval(line)
+	}
+
+	return ranges
+}
+
+func parseUsedIngredients(input string) []int {
+	lines := strings.Split(input, "\n")
+	ingredients := make([]int, len(lines))
+
+	for idx, line := range lines {
+		ingredients[idx] = strconv.MustParseInt(line)
+	}
+
+	return ingredients
+}
+
+func isInAnyRange(value int, ranges []interval.Interval) bool {
+	for _, r := range ranges {
+		if r.Contains(value) {
+			return true
+		}
+	}
+	return false
 }
