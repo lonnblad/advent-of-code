@@ -2,49 +2,61 @@ package day6
 
 import (
 	"regexp"
-	"strconv"
 	"strings"
+
+	"github.com/lonnblad/advent-of-code/util/strconv"
 )
 
 func Day6A(input string) (_ int, err error) {
 	rows := strings.Split(input, "\n")
+	operators := parseOperators(rows[len(rows)-1])
+	dataRows := rows[:len(rows)-1]
 
-	lastRow := rows[len(rows)-1]
+	columnResults := processColumns(dataRows, operators)
+
+	var totalSum int
+	for _, result := range columnResults {
+		totalSum += result
+	}
+
+	return totalSum, nil
+}
+
+func parseOperators(lastRow string) []string {
 	re := regexp.MustCompile(`([\+\*])`)
 	matches := re.FindAllStringSubmatch(lastRow, -1)
 
 	operators := make([]string, len(matches))
 	for idx, match := range matches {
-		operators[idx] = match[0]
+		operators[idx] = match[1]
 	}
 
-	sums := make([]int, len(operators))
+	return operators
+}
 
-	re = regexp.MustCompile(`(\d+)`)
+func processColumns(dataRows []string, operators []string) []int {
+	re := regexp.MustCompile(`(\d+)`)
+	columnResults := make([]int, len(operators))
 
-	for _, row := range rows[:len(rows)-1] {
+	for _, row := range dataRows {
 		matches := re.FindAllStringSubmatch(row, -1)
 
 		for idx, match := range matches {
-			val, _ := strconv.Atoi(match[0])
+			val := strconv.MustParseInt(match[1])
 
 			switch operators[idx] {
 			case "+":
-				sums[idx] += val
+				columnResults[idx] += val
 			case "*":
-				if sums[idx] == 0 {
-					sums[idx] = val
+				// For multiplication, initialize with first value if result is 0
+				if columnResults[idx] == 0 {
+					columnResults[idx] = val
 				} else {
-					sums[idx] *= val
+					columnResults[idx] *= val
 				}
 			}
 		}
 	}
 
-	var totalSum int
-	for _, sum := range sums {
-		totalSum += sum
-	}
-
-	return totalSum, nil
+	return columnResults
 }
