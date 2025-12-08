@@ -8,6 +8,7 @@ go_library(
     ],
     importpath = "github.com/lonnblad/advent-of-code/years/2025/day2",
     visibility = ["//visibility:public"],
+    deps = ["//util/interval"],
 )
 
 go_test(
