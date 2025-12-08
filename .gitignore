@@ -1,0 +1,42 @@
+# Bazel
+bazel-*
+bazel-bin/
+bazel-out/
+bazel-testlogs/
+.cache/
+
+# Go
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work.sum
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+
+# Temporary
+tmp/
+temp/
+*.tmp
+*.bak
+*~
+

@@ -1,0 +1,34 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "day8_ai",
+    srcs = [
+        "8a.go",
+        "8b.go",
+    ],
+    importpath = "github.com/lonnblad/advent-of-code/years/2025/day8_ai",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//util/geometry",
+        "//util/strconv",
+        "//util/unionfind",
+    ],
+)
+
+go_test(
+    name = "day8_ai_test",
+    srcs = [
+        "8a_test.go",
+        "8b_test.go",
+    ],
+    embedsrcs = [
+        "8a_input.example.txt",
+        "8a_input.txt",
+        "8b_input.example.txt",
+        "8b_input.txt",
+    ],
+    deps = [
+        ":day8_ai",
+        "@com_github_stretchr_testify//require",
+    ],
+)
