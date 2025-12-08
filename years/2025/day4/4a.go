@@ -6,7 +6,6 @@ import (
 
 func Day4A(input string) (_ int, err error) {
 	m := matrix.NewMatrix(input)
-
 	var totalSum int
 
 	for ridx, row := range m.Values {
@@ -15,20 +14,24 @@ func Day4A(input string) (_ int, err error) {
 				continue
 			}
 
-			adjacentCells := m.GetAdjacentCells([2]int{ridx, cidx})
-
-			noOfRolls := 0
-			for _, adjacentCell := range adjacentCells {
-				if adjacentCell == "@" {
-					noOfRolls += 1
-				}
-			}
-
-			if noOfRolls < 4 {
-				totalSum += 1
+			if countAdjacentRolls(m, ridx, cidx) < 4 {
+				totalSum++
 			}
 		}
 	}
 
 	return totalSum, nil
+}
+
+func countAdjacentRolls(m matrix.Matrix, ridx, cidx int) int {
+	adjacentCells := m.GetAdjacentCells([2]int{ridx, cidx})
+	count := 0
+
+	for _, adjacentCell := range adjacentCells {
+		if adjacentCell == "@" {
+			count++
+		}
+	}
+
+	return count
 }

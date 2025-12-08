@@ -6,7 +6,6 @@ import (
 
 func Day4B(input string) (_ int, err error) {
 	m := matrix.NewMatrix(input)
-
 	var totalSum int
 
 	for {
@@ -18,18 +17,9 @@ func Day4B(input string) (_ int, err error) {
 					continue
 				}
 
-				adjacentCells := m.GetAdjacentCells([2]int{ridx, cidx})
-
-				noOfRolls := 0
-				for _, adjacentCell := range adjacentCells {
-					if adjacentCell == "@" {
-						noOfRolls += 1
-					}
-				}
-
-				if noOfRolls < 4 {
+				if countAdjacentRolls(m, ridx, cidx) < 4 {
 					m.Values[ridx][cidx] = "."
-					noOfRollsThatCanBeMoved += 1
+					noOfRollsThatCanBeMoved++
 				}
 			}
 		}
