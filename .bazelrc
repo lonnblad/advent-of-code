@@ -1,0 +1,4 @@
+# Test output
+test --test_output=errors
+test --test_summary=detailed
+

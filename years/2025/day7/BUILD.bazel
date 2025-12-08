@@ -1,0 +1,30 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "day7",
+    srcs = [
+        "7a.go",
+        "7b.go",
+    ],
+    importpath = "github.com/lonnblad/advent-of-code/years/2025/day7",
+    visibility = ["//visibility:public"],
+    deps = ["//util/matrix"],
+)
+
+go_test(
+    name = "day7_test",
+    srcs = [
+        "7a_test.go",
+        "7b_test.go",
+    ],
+    embedsrcs = [
+        "7a_input.example.txt",
+        "7a_input.txt",
+        "7b_input.example.txt",
+        "7b_input.txt",
+    ],
+    deps = [
+        ":day7",
+        "@com_github_stretchr_testify//require",
+    ],
+)

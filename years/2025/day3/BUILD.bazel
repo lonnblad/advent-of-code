@@ -1,0 +1,29 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "day3",
+    srcs = [
+        "3a.go",
+        "3b.go",
+    ],
+    importpath = "github.com/lonnblad/advent-of-code/years/2025/day3",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "day3_test",
+    srcs = [
+        "3a_test.go",
+        "3b_test.go",
+    ],
+    embedsrcs = [
+        "3a_input.example.txt",
+        "3a_input.txt",
+        "3b_input.example.txt",
+        "3b_input.txt",
+    ],
+    deps = [
+        ":day3",
+        "@com_github_stretchr_testify//require",
+    ],
+)

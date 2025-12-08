@@ -1,0 +1,8 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "strconv",
+    srcs = ["strconv.go"],
+    importpath = "github.com/lonnblad/advent-of-code/util/strconv",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "interval",
+    srcs = ["interval.go"],
+    importpath = "github.com/lonnblad/advent-of-code/util/interval",
+    visibility = ["//visibility:public"],
+    deps = ["//util/strconv"],
+)
