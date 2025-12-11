@@ -136,7 +136,7 @@ import (
 //go:embed 9a_input.example.txt
 var exampleInput9A string
 
-const expectedExampleOutput9A = 0 // Update with actual expected value
+const expectedExampleOutput9A = -1 // Update with actual expected value
 
 func Test_9A_Example(t *testing.T) {
 	actualOutput9A, actualErr := day9.Day9A(exampleInput9A)
@@ -147,7 +147,7 @@ func Test_9A_Example(t *testing.T) {
 //go:embed 9a_input.txt
 var input9A string
 
-const expectedOutput9A = 0 // Update with actual expected value
+const expectedOutput9A = -1 // Update with actual expected value
 
 func Test_9A_Input(t *testing.T) {
 	actualOutput9A, actualErr := day9.Day9A(input9A)
@@ -181,7 +181,7 @@ import (
 //go:embed 9b_input.example.txt
 var exampleInput9B string
 
-const expectedExampleOutput9B = 0 // Update with actual expected value
+const expectedExampleOutput9B = -1 // Update with actual expected value
 
 func Test_9B_Example(t *testing.T) {
 	actualOutput9B, actualErr := day9.Day9B(exampleInput9B)
@@ -192,7 +192,7 @@ func Test_9B_Example(t *testing.T) {
 //go:embed 9b_input.txt
 var input9B string
 
-const expectedOutput9B = 0 // Update with actual expected value
+const expectedOutput9B = -1 // Update with actual expected value
 
 func Test_9B_Input(t *testing.T) {
 	actualOutput9B, actualErr := day9.Day9B(input9B)
